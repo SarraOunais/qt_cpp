@@ -8,12 +8,15 @@
 class Employes
 {
   QString nom,prenom,email,role,sexe,mot_de_passe;
-  int  id_employes,CIN,RIB;
+  int id_employes;
+  double  CIN,RIB;
   QDate date_naissance,date_embauche;
   float salaire;
 public:
+
     Employes(){};
-    Employes(QString,QString,QString,QString,QString,QString,int,int,int,QDate,QDate,float);
+    Employes(QString,QString,QString,QString,QString,QString,int,double,double,QDate,QDate,float);
+    Employes(int id);
 
     //Getters
     QString getNom(){return nom;}
@@ -23,8 +26,8 @@ public:
     QString getSexe(){return sexe;}
     QString getMotDePasse(){return mot_de_passe;}
     int getIdEmployes(){return id_employes;}
-    int getCIN(){return CIN;}
-    int getRIB(){return RIB;}
+    double getCIN(){return CIN;}
+    double getRIB(){return RIB;}
     QDate getDate_naissance(){return date_naissance;};
     QDate getDate_embauche(){return date_embauche;};
     float getSalaire(){return salaire;};
@@ -37,8 +40,8 @@ public:
     void setSexe(const QString &nouveauSexe) { sexe = nouveauSexe; }
     void setMotDePasse(const QString &nouveauMotDePasse) { mot_de_passe = nouveauMotDePasse; }
     void setIdEmployes(int nouvelIdEmployes) { id_employes = nouvelIdEmployes; }
-    void setCIN(int nouveauCIN) { CIN = nouveauCIN; }
-    void setRIB(int nouveauRIB) { RIB = nouveauRIB; }
+    void setCIN(double nouveauCIN) { CIN = nouveauCIN; }
+    void setRIB(double nouveauRIB) { RIB = nouveauRIB; }
     void setDate_naissance(const QDate &nouvelleDateNaissance) { date_naissance = nouvelleDateNaissance; }
     void setDate_embauche(const QDate &nouvelleDateEmbauche) { date_embauche = nouvelleDateEmbauche; }
     void setSalaire(float nouveauSalaire) { salaire = nouveauSalaire; }
@@ -47,6 +50,8 @@ public:
     bool ajouter();
     QSqlQueryModel * afficher();
     bool supprimer(int);
+    bool modifier();
+    bool existe();
 };
 
 #endif // EMPLOYES_H
