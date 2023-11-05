@@ -19,18 +19,18 @@ public:
     Employes(int id);
 
     //Getters
-    QString getNom(){return nom;}
-    QString getPrenom(){return prenom;}
-    QString getEmail(){return email;}
-    QString getRole(){return role;}
-    QString getSexe(){return sexe;}
-    QString getMotDePasse(){return mot_de_passe;}
-    int getIdEmployes(){return id_employes;}
-    double getCIN(){return CIN;}
-    double getRIB(){return RIB;}
-    QDate getDate_naissance(){return date_naissance;};
-    QDate getDate_embauche(){return date_embauche;};
-    float getSalaire(){return salaire;};
+    QString getNom() const {return nom;}
+    QString getPrenom() const {return prenom;}
+    QString getEmail() const {return email;}
+    QString getRole() const {return role;}
+    QString getSexe() const {return sexe;}
+    QString getMotDePasse() const {return mot_de_passe;}
+    int getIdEmployes() const {return id_employes;}
+    double getCIN() const {return CIN;}
+    double getRIB() const{return RIB;}
+    QDate getDate_naissance() const {return date_naissance;};
+    QDate getDate_embauche() const {return date_embauche;};
+    float getSalaire()const {return salaire;};
 
     //Setters
     void setNom(const QString &nouveauNom) { nom = nouveauNom; }
@@ -52,6 +52,10 @@ public:
     bool supprimer(int);
     bool modifier();
     bool existe();
+    bool load(int id_employes);
+    QSqlQueryModel *rechercher_nom(const QString &nom);
+    QSqlQueryModel *trier_dateEmbauche();
+    QList<Employes> getAllEmployees();
 };
 
 #endif // EMPLOYES_H

@@ -3,5 +3,9 @@
         <file>qt/Rectangle 10.png</file>
         <file>qt/Rectangle 13.png</file>
         <file>qt/2.png</file>
+        <file>qt/3.png</file>
+        <file>qt/Rectangle 14.png</file>
+        <file>qt/chercher.png</file>
+        <file>qt/refresh.png</file>
     </qresource>
 </RCC>
