@@ -2,13 +2,14 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <connection.h>
+#include "authentification.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Connection c;
     bool test=c.createconnect();
-    gestion_employes w;
+    Authentification w;
     if(test)
     {
         w.show();

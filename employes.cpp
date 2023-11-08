@@ -1,6 +1,14 @@
 #include<iostream>
 #include <QSqlError>
 #include <QDebug>
+
+
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMainWindow>
+#include <QtCharts/QChartView>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QPieSlice>
+
 #include "employes.h"
 
 Employes::Employes(QString nom, QString prenom, QString email, QString role, QString sexe, QString mot_de_passe, int id_employes, double CIN, double RIB, QDate date_naissance, QDate date_embauche, float salaire)
@@ -237,3 +245,80 @@ QList<Employes> Employes::getAllEmployees()
 
     return employees;
 }
+
+
+
+QT_CHARTS_USE_NAMESPACE
+
+
+QChartView* Employes::statistique()
+{
+    QSqlQuery query;
+    int totalEmployees = 0;
+    int maleCount = 0;
+    int femaleCount = 0;
+    double pourc_homme,pourc_femme;
+
+
+    if (query.exec("SELECT COUNT(*) FROM employes")) {
+        if (query.next()) {
+            totalEmployees = query.value(0).toInt();
+        }
+    }
+
+    if (query.exec("SELECT COUNT(*) FROM employes WHERE sexe = 'Homme'")) {
+        if (query.next()) {
+            maleCount = query.value(0).toInt();
+        }
+    }
+
+    if (query.exec("SELECT COUNT(*) FROM employes WHERE sexe = 'Femme'")) {
+        if (query.next()) {
+            femaleCount = query.value(0).toInt();
+        }
+    }
+
+    pourc_homme = (static_cast<double>(maleCount) / totalEmployees) * 100;
+    pourc_femme = (static_cast<double>(femaleCount) / totalEmployees) * 100;
+
+    QPieSeries *series = new QPieSeries();
+    QPieSlice *sliceJane = new QPieSlice("FEMME", pourc_femme);
+    QPieSlice *sliceHomme = new QPieSlice("HOMME", pourc_homme);
+
+    sliceJane->setBrush(QColor("#F849F1"));
+    sliceJane->setPen(QPen(QColor("#F849F1"), 2));
+    sliceHomme->setBrush(QColor("#1EC8DF"));
+    sliceHomme->setPen(QPen(QColor("#1EC8DF"), 2));
+
+    series->append(sliceJane);
+    series->append(sliceHomme);
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Statistique Hommes/Femme");
+
+
+    double total = 0;
+    for (QPieSlice *slice : series->slices()) {
+        total += slice->value();
+    }
+
+
+    for (QPieSlice *slice : series->slices()) {
+        slice->setExploded();
+        slice->setLabelVisible();
+
+
+        double percentage = (slice->value() / total) * 100;
+        QString label = QString("%1 (%2%)").arg(slice->label()).arg(percentage, 0, 'f', 1);
+        slice->setLabel(label);
+    }
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    return chartView;
+}
+
+
+

@@ -7,5 +7,6 @@
         <file>qt/Rectangle 14.png</file>
         <file>qt/chercher.png</file>
         <file>qt/refresh.png</file>
+        <file>qt/Interface.png</file>
     </qresource>
 </RCC>

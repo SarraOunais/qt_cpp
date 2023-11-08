@@ -5,6 +5,11 @@
 #include<QSqlQueryModel>
 #include<QDate>
 
+#include <QtCharts/QChartView>
+
+
+
+QT_CHARTS_USE_NAMESPACE
 class Employes
 {
   QString nom,prenom,email,role,sexe,mot_de_passe;
@@ -56,6 +61,8 @@ public:
     QSqlQueryModel *rechercher_nom(const QString &nom);
     QSqlQueryModel *trier_dateEmbauche();
     QList<Employes> getAllEmployees();
+    QChartView* statistique();
+    void pourcentage(double &pourc_homme, double &pourc_femme);
 };
 
 #endif // EMPLOYES_H

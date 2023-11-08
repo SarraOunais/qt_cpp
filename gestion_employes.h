@@ -25,10 +25,6 @@ private slots:
 
     void on_boutton_supprimer_clicked();
 
-    void on_next_p2_clicked();
-
-    void on_pred_p1_clicked();
-
     void on_pred_p0_clicked();
 
     void on_boutton_modifier_clicked();
@@ -41,14 +37,26 @@ private slots:
 
     void on_button_trier_clicked();
 
-    void on_button_trier_2_clicked();
-
     void on_button_genererPDF_clicked();
 
     QString getEmployeeField(const Employes &employee, int columnIndex);
 
+    void on_button_statistique_clicked();
+
+    void addTask(const QDate &date, const QString &taskText);
+
+    void on_boutton_ajouter_tache_clicked();
+
+    void updateListViewForDate(const QDate &selectedDate);
+
+    void on_calendarWidget_selectionChanged();
+
+    void on_boutton_valider_clicked();
+
 private:
     Ui::gestion_employes *ui;
+    QDate selectedDate;
+    QMap<QDate, QStringList> tasksByDate;
 
 };
 #endif // GESTION_EMPLOYES_H

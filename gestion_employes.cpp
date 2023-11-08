@@ -19,9 +19,12 @@
 #include <QFileDialog>
 #include <QPageSize>
 
+#include <QTextEdit>
+#include <QListWidget>
+#include <QStandardItemModel>
+
+
 #include <QDebug>
-
-
 #include "gestion_employes.h"
 #include "ui_gestion_employes.h"
 #include "employes.h"
@@ -35,7 +38,8 @@ gestion_employes::gestion_employes(QWidget *parent)
     ui->tableView->setModel(e.afficher());
     ui->tableView->resizeColumnsToContents();
     ui->CIN_e->setValidator(new QIntValidator(0,99999999,this));
-
+    QChartView *chartWidget = e.statistique();
+    ui->stackedWidget->addWidget(chartWidget);
 }
 
 gestion_employes::~gestion_employes()
@@ -75,6 +79,26 @@ void gestion_employes::on_boutton_ajouter_clicked()
     QDate date_naissance=ui->date_naissance->date();
     QDate date_embauche=ui->date_embauche->date();
     QString sexe=getSelectedGender();
+    QDate currentDate = QDate::currentDate();
+
+    QRegExp nomPrenomRegex("^[a-zA-Z ]+$");
+
+    if (!nomPrenomRegex.exactMatch(nom) || !nomPrenomRegex.exactMatch(prenom))
+    {
+           QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Le nom et le prénom doivent contenir uniquement des lettres et des espaces."), QMessageBox::Cancel);
+           return;
+    }
+
+    if (date_naissance > currentDate)
+    {
+           QMessageBox::warning(this, "Erreur", "La date de naissance ne peut pas dépasser la date actuelle.");
+            return;
+    }
+    if (date_embauche > currentDate)
+    {
+           QMessageBox::warning(this, "Erreur", "La date d'embauche ne peut pas dépasser la date actuelle.");
+            return;
+    }
 
     QRegExp regex("^[a-zA-Z0-9]+$");  // Mot de passe composé de lettres et de chiffres seulement
 
@@ -144,20 +168,6 @@ void gestion_employes::on_next_p1_clicked()
 }
 
 
-void gestion_employes::on_next_p2_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(2);
-}
-
-
-
-void gestion_employes::on_pred_p1_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(1);
-}
-
-
-
 void gestion_employes::on_pred_p0_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
@@ -211,7 +221,26 @@ void gestion_employes::on_boutton_modifier_clicked()
     QDate date_naissance = ui->date_naissance->date();
     QDate date_embauche = ui->date_embauche->date();
     QString sexe = getSelectedGender();
+    QDate currentDate = QDate::currentDate();
 
+    QRegExp nomPrenomRegex("^[a-zA-Z ]+$");
+
+    if (!nomPrenomRegex.exactMatch(nom) || !nomPrenomRegex.exactMatch(prenom))
+    {
+           QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Le nom et le prénom doivent contenir uniquement des lettres et des espaces."), QMessageBox::Cancel);
+           return;
+    }
+
+    if (date_naissance > currentDate)
+    {
+           QMessageBox::warning(this, "Erreur", "La date de naissance ne peut pas dépasser la date actuelle.");
+            return;
+    }
+    if (date_embauche > currentDate)
+    {
+           QMessageBox::warning(this, "Erreur", "La date d'embauche ne peut pas dépasser la date actuelle.");
+            return;
+    }
 
     if (salaire <= 0.0) {
         QMessageBox::warning(nullptr, QObject::tr("Erreur"), QObject::tr("Le salaire doit être supérieur à zéro."));
@@ -264,17 +293,16 @@ void gestion_employes::on_boutton_modifier_clicked()
 
 void gestion_employes::on_tableView_doubleClicked(const QModelIndex &index)
 {
-    int row = index.row(); // Récupérer la ligne sélectionnée dans le tableau
+    int row = index.row();
 
-        // Utilisez le modèle de données pour accéder aux informations de l'employé
-        QModelIndex idIndex = ui->tableView->model()->index(row, 0); // Supposons que la colonne 0 contient l'ID de l'employé
+        QModelIndex idIndex = ui->tableView->model()->index(row, 0);
         int id_employes = ui->tableView->model()->data(idIndex).toInt();
 
         Employes E;
 
-        // Charger les données de l'employé à partir de la base de données
+
         if (E.load(id_employes)) {
-            // Remplir les labels avec les attributs de l'employé
+
             ui->nom_e->setText(E.getNom());
             ui->prenom_e->setText(E.getPrenom());
             ui->email_e->setText(E.getEmail());
@@ -294,11 +322,8 @@ void gestion_employes::on_tableView_doubleClicked(const QModelIndex &index)
                         ui->femme->setChecked(true);
                     }
 
-            // Continuez avec d'autres labels pour les attributs restants
-
-            // Assurez-vous de gérer les labels pour les attributs restants de la même manière
         } else {
-            // Gérer l'erreur si l'employé n'est pas trouvé
+
             QMessageBox::critical(nullptr, QObject::tr("Erreur"), QObject::tr("L'employé n'a pas été trouvé."), QMessageBox::Ok);
         }
 }
@@ -346,7 +371,7 @@ void gestion_employes::on_button_genererPDF_clicked()
     Employes e;
     QList<Employes> employees = e.getAllEmployees();
     if (employees.isEmpty()) {
-        // Gérer le cas où aucun employé n'est trouvé dans la base de données
+
         return;
     }
 
@@ -361,29 +386,27 @@ void gestion_employes::on_button_genererPDF_clicked()
 
     QPainter painter(&pdfWriter);
 
-    // Définir la mise en page du document PDF et les polices
+
     QFont font;
-    font.setPixelSize(100); // Ajuster la taille de la police à 100 pixels
+    font.setPixelSize(100);
     painter.setFont(font);
 
-    int y = 20; // Position verticale initiale
+    int y = 20;
 
-    // Définir les largeurs des colonnes et leurs étiquettes
     const int colWidth = 800;
     const QStringList colLabels = {"ID", "Nom", "Prénom", "Email", "Sexe", "Rôle", "mot de passe", "CIN", "RIB", "Salaire", "Naissance", "Embauche"};
 
-    // Dessiner la première ligne avec les étiquettes de colonnes
+
     for (int i = 0; i < colLabels.size(); i++) {
         painter.drawText(i * colWidth, y, colWidth, 100, Qt::AlignLeft, colLabels[i]);
     }
-    y += 200; // Déplacement vertical pour les données
-
+    y += 200;
     for (const Employes &employee : employees) {
-        // Dessiner une ligne pour chaque employé
+
         for (int i = 0; i < colLabels.size(); i++) {
             painter.drawText(i * colWidth, y, colWidth, 100, Qt::AlignLeft, getEmployeeField(employee, i));
         }
-        y += 200; // Déplacement vertical pour la prochaine ligne
+        y += 200;
     }
 
     bool exportSuccess = painter.end();
@@ -418,3 +441,111 @@ QString gestion_employes::getEmployeeField(const Employes &employee, int columnI
 
 }
 
+
+void gestion_employes::on_button_statistique_clicked()
+{
+    Employes e;
+
+    QWidget*  View = e.statistique();
+    View->resize(800, 600); 
+    View->show();
+}
+
+
+void gestion_employes::addTask(const QDate &date, const QString &taskText)
+{
+    if (taskText.isEmpty()) {
+
+        return;
+    }
+
+
+    if (!tasksByDate.contains(date)) {
+        tasksByDate[date] = QStringList();
+    }
+
+
+    QStringList &tasks = tasksByDate[date];
+
+
+    int index = tasks.indexOf(taskText);
+
+    if (index != -1) {
+
+        tasks[index] = taskText;
+    } else {
+
+        tasks.append(taskText);
+    }
+
+
+    updateListViewForDate(ui->calendarWidget->selectedDate());
+}
+
+void gestion_employes::updateListViewForDate(const QDate &date)
+{
+
+    QStandardItemModel *listModel = qobject_cast<QStandardItemModel*>(ui->listView->model());
+
+    if (!listModel) {
+
+        listModel = new QStandardItemModel(ui->listView);
+        ui->listView->setModel(listModel);
+    }
+
+
+    listModel->clear();
+
+
+    if (tasksByDate.contains(date)) {
+
+        const QStringList &tasks = tasksByDate[date];
+
+
+        for (const QString &task : tasks) {
+            QStandardItem *taskItem = new QStandardItem(task);
+            listModel->appendRow(taskItem);
+        }
+    }
+}
+
+void gestion_employes::on_boutton_ajouter_tache_clicked()
+{
+    QDate selectedDate = ui->calendarWidget->selectedDate();
+    QString taskText = "Nouvelle tâche";
+
+    addTask(selectedDate, taskText);
+}
+
+void gestion_employes::on_calendarWidget_selectionChanged()
+{
+    QDate selectedDate = ui->calendarWidget->selectedDate();
+    updateListViewForDate(selectedDate);
+}
+
+void gestion_employes::on_boutton_valider_clicked()
+{
+
+        QDate selectedDate = ui->calendarWidget->selectedDate();
+
+
+        if (!tasksByDate.contains(selectedDate)) {
+            tasksByDate[selectedDate] = QStringList();
+        }
+
+
+        QStringList &tasks = tasksByDate[selectedDate];
+
+
+        for (int i = 0; i < ui->listView->model()->rowCount(); i++) {
+            QModelIndex index = ui->listView->model()->index(i, 0);
+            QString taskText = index.data().toString();
+
+            if (!tasks.contains(taskText)) {
+                tasks.append(taskText);
+            }
+        }
+
+        // Effacez la QListView
+       //ui->listView->model()->removeRows(0, ui->listView->model()->rowCount());
+}

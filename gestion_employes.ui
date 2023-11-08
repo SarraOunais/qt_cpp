@@ -155,6 +155,11 @@ background-color: rgb(0, 85, 98);
       <height>645</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+     </font>
+    </property>
     <property name="currentIndex">
      <number>0</number>
     </property>
@@ -804,7 +809,7 @@ border: 2px solid rgb(0, 85, 98);
      <widget class="QPushButton" name="button_trier">
       <property name="geometry">
        <rect>
-        <x>450</x>
+        <x>400</x>
         <y>560</y>
         <width>241</width>
         <height>41</height>
@@ -826,7 +831,7 @@ border: 2px solid rgb(0, 85, 98);
      <widget class="QPushButton" name="button_genererPDF">
       <property name="geometry">
        <rect>
-        <x>790</x>
+        <x>690</x>
         <y>560</y>
         <width>131</width>
         <height>41</height>
@@ -843,6 +848,28 @@ border: 2px solid rgb(0, 85, 98);
       </property>
       <property name="text">
        <string>Generer PDF</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_statistique">
+      <property name="geometry">
+       <rect>
+        <x>860</x>
+        <y>560</y>
+        <width>131</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 20px;
+border-color: rgb(0, 0, 0);
+color: rgb(0, 85, 98);
+font: 75 10pt &quot;MS Shell Dlg 2&quot;;
+background-color: rgb(255, 255, 255);
+border: 2px solid rgb(0, 85, 98);
+</string>
+      </property>
+      <property name="text">
+       <string>statistique</string>
       </property>
      </widget>
      <zorder>label_3</zorder>
@@ -884,28 +911,13 @@ border: 2px solid rgb(0, 85, 98);
      <zorder>refresh</zorder>
      <zorder>button_trier</zorder>
      <zorder>button_genererPDF</zorder>
+     <zorder>button_statistique</zorder>
     </widget>
     <widget class="QWidget" name="page_2">
-     <widget class="QLabel" name="label_17">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>800</width>
-        <height>500</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="resource.qrc">:/new/prefix1/qt/Rectangle 13.png</pixmap>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_20">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>410</x>
         <y>10</y>
         <width>501</width>
         <height>61</height>
@@ -916,34 +928,14 @@ border: 2px solid rgb(0, 85, 98);
 font: 75 16pt &quot;MS Shell Dlg 2&quot;;</string>
       </property>
       <property name="text">
-       <string>Listes des employés</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="next_p2">
-      <property name="geometry">
-       <rect>
-        <x>760</x>
-        <y>460</y>
-        <width>21</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border-radius: 20px;
-color: rgb(255, 255, 255);
-font: 75 10pt &quot;MS Shell Dlg 2&quot;;
-background-color: rgb(184, 166, 73);
-</string>
-      </property>
-      <property name="text">
-       <string>&gt;</string>
+       <string>Calendrier des taches </string>
       </property>
      </widget>
      <widget class="QPushButton" name="pred_p0">
       <property name="geometry">
        <rect>
-        <x>730</x>
-        <y>460</y>
+        <x>1060</x>
+        <y>610</y>
         <width>21</width>
         <height>21</height>
        </rect>
@@ -959,48 +951,69 @@ background-color: rgb(184, 166, 73);
        <string>&lt;</string>
       </property>
      </widget>
-    </widget>
-    <widget class="QWidget" name="page_3">
-     <widget class="QLabel" name="label_18">
+     <widget class="QLabel" name="label_17">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>800</width>
-        <height>500</height>
+        <width>1111</width>
+        <height>651</height>
        </rect>
       </property>
       <property name="text">
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resource.qrc">:/new/prefix1/qt/Rectangle 13.png</pixmap>
+       <pixmap resource="resource.qrc">:/new/prefix1/qt/Rectangle 14.png</pixmap>
       </property>
      </widget>
-     <widget class="QLabel" name="label_19">
+     <widget class="QCalendarWidget" name="calendarWidget">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>10</y>
-        <width>501</width>
-        <height>61</height>
+        <x>530</x>
+        <y>130</y>
+        <width>511</width>
+        <height>401</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QListView" name="listView">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>130</y>
+        <width>351</width>
+        <height>391</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="boutton_ajouter_tache">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>130</y>
+        <width>31</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 85, 98);
-font: 75 16pt &quot;MS Shell Dlg 2&quot;;</string>
+       <string notr="true">border-radius: 12px;
+color: rgb(255, 255, 255);
+font: 75 15pt &quot;MS Shell Dlg 2&quot;;
+background-color: rgb(184, 166, 73);
+</string>
       </property>
       <property name="text">
-       <string>Statistique</string>
+       <string>+</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pred_p1">
+     <widget class="QPushButton" name="boutton_valider">
       <property name="geometry">
        <rect>
-        <x>760</x>
-        <y>460</y>
-        <width>21</width>
-        <height>21</height>
+        <x>160</x>
+        <y>530</y>
+        <width>141</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -1011,9 +1024,16 @@ background-color: rgb(184, 166, 73);
 </string>
       </property>
       <property name="text">
-       <string>&lt;</string>
+       <string>Valider</string>
       </property>
      </widget>
+     <zorder>label_17</zorder>
+     <zorder>label_20</zorder>
+     <zorder>pred_p0</zorder>
+     <zorder>calendarWidget</zorder>
+     <zorder>listView</zorder>
+     <zorder>boutton_ajouter_tache</zorder>
+     <zorder>boutton_valider</zorder>
     </widget>
    </widget>
   </widget>
